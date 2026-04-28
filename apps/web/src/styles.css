@@ -1,3 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap');
+
+:root {
+  --pw-blue: #005292;
+  --pw-blue-dark: #003e6e;
+  --pw-blue-soft: #e6eef5;
+  --pw-dark: #1d1d1b;
+  --pw-charcoal: #2e363a;
+  --pw-text: #333333;
+  --pw-muted: #6b7280;
+  --pw-bg: #f6f6f6;
+  --pw-bg-card: #ffffff;
+  --pw-border: #e5e7eb;
+  --pw-accent: #008000;
+
+  /* PrimeReact overrides — usate dai componenti Lara */
+  --primary-color: var(--pw-blue);
+  --primary-color-text: #ffffff;
+  --primary-50: #e6eef5;
+  --primary-100: #b3cce0;
+  --primary-200: #80a9cb;
+  --primary-300: #4d87b6;
+  --primary-400: #1a64a1;
+  --primary-500: var(--pw-blue);
+  --primary-600: #00467d;
+  --primary-700: #003a68;
+  --primary-800: #002e53;
+  --primary-900: #00223e;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,59 +38,163 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
-  background: #f4f6f9;
-  color: #1f2937;
+  font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  background: var(--pw-bg);
+  color: var(--pw-text);
 }
 
-.app-shell {
-  max-width: 1100px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Titillium Web', sans-serif;
+  color: var(--pw-dark);
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--pw-blue);
+}
+
+/* TopBar */
+.topbar {
+  background: #ffffff;
+  border-bottom: 4px solid var(--pw-blue);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.topbar-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.app-header {
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.topbar-brand img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.topbar-tagline {
+  border-left: 1px solid var(--pw-border);
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.topbar-tagline .top {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pw-muted);
+  font-weight: 600;
+}
+
+.topbar-tagline .bottom {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pw-dark);
+}
+
+@media (max-width: 640px) {
+  .topbar-tagline {
+    display: none;
+  }
+}
+
+/* App shell */
+.app-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  gap: 16px;
 }
 
-.app-header h1 {
+.page-header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: 700;
 }
 
+.page-subtitle {
+  margin: -16px 0 24px;
+  color: var(--pw-muted);
+  font-size: 14px;
+}
+
+/* Card */
 .card {
-  background: #fff;
+  background: var(--pw-bg-card);
   border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--pw-border);
 }
 
+.card-readonly {
+  background: var(--pw-bg);
+  border: 1px solid var(--pw-border);
+  border-radius: 6px;
+  padding: 16px;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: none;
+}
+
+/* Form */
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .field label {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--pw-charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 18px;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .muted {
-  color: #6b7280;
+  color: var(--pw-muted);
   font-size: 13px;
 }
 
@@ -68,5 +202,28 @@ body,
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: 20px;
+}
+
+/* PrimeReact button override per il primary */
+.p-button.p-button-primary,
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-secondary):not(.p-button-success):not(.p-button-warning):not(.p-button-danger):not(.p-button-help):not(.p-button-info) {
+  background: var(--pw-blue);
+  border-color: var(--pw-blue);
+}
+
+.p-button.p-button-primary:enabled:hover,
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-secondary):not(.p-button-success):not(.p-button-warning):not(.p-button-danger):not(.p-button-help):not(.p-button-info):enabled:hover {
+  background: var(--pw-blue-dark);
+  border-color: var(--pw-blue-dark);
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--pw-bg);
+  color: var(--pw-dark);
+  font-family: 'Titillium Web', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  font-weight: 700;
 }

@@ -109,9 +109,7 @@ export function DettaglioRichiesta() {
 
       <div className="field" style={{ marginTop: 24 }}>
         <label>Testo della richiesta</label>
-        <div className="card" style={{ background: '#f9fafb', boxShadow: 'none' }}>
-          {data.testo}
-        </div>
+        <div className="card-readonly">{data.testo}</div>
       </div>
 
       <div className="row">
