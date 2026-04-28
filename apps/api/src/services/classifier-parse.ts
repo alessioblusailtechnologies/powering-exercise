@@ -4,8 +4,7 @@ import {
   ClassificazioneSchema,
   type Classificazione,
 } from '@powering/shared';
-
-export const TOOL_NAME = 'salva_classificazione';
+import { ClassifierTool } from './classifier-tool';
 
 export type ClassifyResult =
   | { ok: true; classificazione: Classificazione }
@@ -24,7 +23,7 @@ export function parseClassificazioneFromMessage(
 ): ClassifyResult {
   const toolUseBlock = message.content.find(
     (block): block is Anthropic.ToolUseBlock =>
-      block.type === 'tool_use' && block.name === TOOL_NAME,
+      block.type === 'tool_use' && block.name === ClassifierTool.NAME,
   );
 
   if (!toolUseBlock) {
