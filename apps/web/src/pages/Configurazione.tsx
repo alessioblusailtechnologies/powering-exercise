@@ -65,7 +65,7 @@ export function Configurazione() {
 
   return (
     <div className="card">
-      <h2 style={{ marginTop: 0 }}>Configurazione modello AI</h2>
+      <h2 style={{ marginTop: 0 }}>Configurazione AI</h2>
       <p className="muted">
         Scegli il provider e il modello usato per classificare automaticamente
         le richieste cliente. La selezione è persistente e applicata a tutte

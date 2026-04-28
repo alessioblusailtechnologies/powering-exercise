@@ -120,3 +120,29 @@ export function isValidAiConfig(cfg: AiConfig): boolean {
   if (!provider) return false;
   return provider.models.some((m) => m.id === cfg.model);
 }
+
+// ─── Observability — log delle chiamate LLM ────────────────────────────────
+
+export const LlmCallStatusSchema = z.enum([
+  'ok',
+  'parse_error',
+  'api_error',
+]);
+export type LlmCallStatus = z.infer<typeof LlmCallStatusSchema>;
+
+export const LlmCallSchema = z.object({
+  id: z.string().uuid(),
+  provider: ProviderSchema,
+  model: z.string(),
+  started_at: z.string(),
+  duration_ms: z.number().int(),
+  tokens_input: z.number().int().nullable(),
+  tokens_output: z.number().int().nullable(),
+  status: LlmCallStatusSchema,
+  attempt: z.number().int(),
+  error: z.string().nullable(),
+  testo_input: z.string(),
+  response_raw: z.unknown().nullable(),
+  classificazione: ClassificazioneSchema.nullable(),
+});
+export type LlmCall = z.infer<typeof LlmCallSchema>;

@@ -146,6 +146,23 @@ a {
   color: var(--pw-blue);
 }
 
+/* Code block per JSON dump nei modali */
+.code-block {
+  background: var(--pw-bg);
+  color: var(--pw-text);
+  border: 1px solid var(--pw-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* App shell */
 .app-shell {
   max-width: 1200px;

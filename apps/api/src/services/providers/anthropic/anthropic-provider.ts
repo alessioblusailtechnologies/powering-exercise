@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { env } from '../../../env';
 import type { ClassifyResult } from '../../types';
 import { failSoft } from '../../types';
+import { LlmLogger } from '../../llm-logger';
 import { BaseClassifierProvider } from '../base-provider';
 import { AnthropicTool } from './anthropic-tool';
 import { AnthropicRetry } from './anthropic-retry';
@@ -45,16 +46,36 @@ export class AnthropicProvider extends BaseClassifierProvider<Anthropic> {
     let lastError = '';
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      const scope = LlmLogger.start(this.id, model, testo, attempt + 1);
+
       let response: Anthropic.Message;
       try {
         response = await this.callModel(client, model, messages);
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         this.log('error', `chiamata fallita: ${msg}`);
+        await scope.close({
+          status: 'api_error',
+          tokens_input: null,
+          tokens_output: null,
+          error: msg,
+          response_raw: null,
+          classificazione: null,
+        });
         return failSoft(`Chiamata al modello fallita: ${msg}`);
       }
 
       const result = parseClassificazioneFromMessage(response);
+
+      await scope.close({
+        status: result.ok ? 'ok' : 'parse_error',
+        tokens_input: response.usage.input_tokens,
+        tokens_output: response.usage.output_tokens,
+        error: result.ok ? null : result.error,
+        response_raw: response,
+        classificazione: result.ok ? result.classificazione : null,
+      });
+
       if (result.ok) {
         if (attempt > 0) {
           this.log('info', `recuperato al tentativo ${attempt + 1}`);

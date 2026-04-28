@@ -15,7 +15,11 @@ export function TopBar() {
         <nav className="topbar-nav">
           <NavLink to="/configurazione" className="topbar-nav-link">
             <i className="pi pi-cog" />
-            <span>Configurazione</span>
+            <span>Configurazione AI</span>
+          </NavLink>
+          <NavLink to="/observability" className="topbar-nav-link">
+            <i className="pi pi-chart-line" />
+            <span>Observability</span>
           </NavLink>
         </nav>
       </div>

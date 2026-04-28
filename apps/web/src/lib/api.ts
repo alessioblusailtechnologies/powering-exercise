@@ -1,6 +1,7 @@
 import type {
   AggiornaRichiesta,
   AiConfig,
+  LlmCall,
   ProviderOption,
   CreaRichiesta,
   Richiesta,
@@ -54,4 +55,6 @@ export const api = {
       method: 'PUT',
       body: JSON.stringify(body),
     }),
+
+  listLlmCalls: () => http<LlmCall[]>('/llm-calls'),
 };

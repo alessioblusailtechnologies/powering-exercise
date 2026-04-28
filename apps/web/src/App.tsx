@@ -5,18 +5,24 @@ import { ListaRichieste } from './pages/ListaRichieste';
 import { NuovaRichiesta } from './pages/NuovaRichiesta';
 import { DettaglioRichiesta } from './pages/DettaglioRichiesta';
 import { Configurazione } from './pages/Configurazione';
+import { Observability } from './pages/Observability';
+
+const PAGE_TITLES: Record<string, string> = {
+  '/configurazione': 'Configurazione AI',
+  '/observability': 'Observability',
+};
 
 export function App() {
   const location = useLocation();
   const inLista = location.pathname === '/';
-  const inConfig = location.pathname === '/configurazione';
+  const pageTitle = PAGE_TITLES[location.pathname] ?? 'Richieste cliente';
 
   return (
     <>
       <TopBar />
       <div className="app-shell">
         <header className="page-header">
-          <h1>{inConfig ? 'Configurazione' : 'Richieste cliente'}</h1>
+          <h1>{pageTitle}</h1>
           {inLista && (
             <Link to="/nuova">
               <Button label="Nuova richiesta" icon="pi pi-plus" />
@@ -29,6 +35,7 @@ export function App() {
           <Route path="/nuova" element={<NuovaRichiesta />} />
           <Route path="/richieste/:id" element={<DettaglioRichiesta />} />
           <Route path="/configurazione" element={<Configurazione />} />
+          <Route path="/observability" element={<Observability />} />
         </Routes>
       </div>
     </>

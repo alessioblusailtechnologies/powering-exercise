@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { env } from '../../../env';
 import type { ClassifyResult } from '../../types';
 import { failSoft } from '../../types';
+import { LlmLogger } from '../../llm-logger';
 import { BaseClassifierProvider } from '../base-provider';
 import { OpenAISchema } from './openai-schema';
 import { parseClassificazioneFromContent } from './openai-parse';
@@ -53,17 +54,38 @@ export class OpenAIProvider extends BaseClassifierProvider<OpenAI> {
     let lastError = '';
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      const scope = LlmLogger.start(this.id, model, testo, attempt + 1);
+
+      let completion: OpenAI.Chat.Completions.ChatCompletion;
       let raw: string | null;
       try {
-        const completion = await this.callModel(client, model, messages);
+        completion = await this.callModel(client, model, messages);
         raw = completion.choices[0]?.message.content ?? null;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         this.log('error', `chiamata fallita: ${msg}`);
+        await scope.close({
+          status: 'api_error',
+          tokens_input: null,
+          tokens_output: null,
+          error: msg,
+          response_raw: null,
+          classificazione: null,
+        });
         return failSoft(`Chiamata al modello fallita: ${msg}`);
       }
 
       const result = parseClassificazioneFromContent(raw);
+
+      await scope.close({
+        status: result.ok ? 'ok' : 'parse_error',
+        tokens_input: completion.usage?.prompt_tokens ?? null,
+        tokens_output: completion.usage?.completion_tokens ?? null,
+        error: result.ok ? null : result.error,
+        response_raw: completion,
+        classificazione: result.ok ? result.classificazione : null,
+      });
+
       if (result.ok) {
         if (attempt > 0) {
           this.log('info', `recuperato al tentativo ${attempt + 1}`);
