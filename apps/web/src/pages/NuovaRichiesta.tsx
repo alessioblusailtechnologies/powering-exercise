@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Message } from 'primereact/message';
-import { CreaRichiestaSchema } from '@powering/shared';
+import { CreaRichiestaSchema, TESTO_MAX_LEN } from '@powering/shared';
 import { api } from '../lib/api';
 
 export function NuovaRichiesta() {
@@ -22,6 +22,10 @@ export function NuovaRichiesta() {
       });
     },
   });
+
+  const len = testo.length;
+  const tooLong = len > TESTO_MAX_LEN;
+  const tooShort = len === 0;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -48,12 +52,25 @@ export function NuovaRichiesta() {
         <InputTextarea
           id="testo"
           value={testo}
-          onChange={(e) => setTesto(e.target.value)}
+          onChange={(e) => setTesto(e.target.value.slice(0, TESTO_MAX_LEN))}
           rows={8}
           autoResize
+          maxLength={TESTO_MAX_LEN}
           placeholder="Es. Il cliente segnala che il dispositivo non si connette più alla rete mobile dopo l'ultimo aggiornamento."
           disabled={mutation.isPending}
+          className={tooLong ? 'p-invalid' : undefined}
         />
+        <div
+          className="muted"
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            color: tooLong ? '#991b1b' : undefined,
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {len} / {TESTO_MAX_LEN}
+        </div>
       </div>
 
       {validationError && (
@@ -85,6 +102,7 @@ export function NuovaRichiesta() {
           label={mutation.isPending ? 'Classifico…' : 'Classifica e salva'}
           icon={mutation.isPending ? 'pi pi-spin pi-spinner' : 'pi pi-sparkles'}
           loading={mutation.isPending}
+          disabled={tooShort || tooLong || mutation.isPending}
         />
       </div>
     </form>

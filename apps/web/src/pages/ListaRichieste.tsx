@@ -35,15 +35,16 @@ export function ListaRichieste() {
   const richieste = data ?? [];
 
   return (
-    <div className="card">
+    <div className="table-wrap">
       <DataTable
         value={richieste}
         emptyMessage="Nessuna richiesta. Creane una con il pulsante in alto."
         onRowClick={(e) => navigate(`/richieste/${(e.data as Richiesta).id}`)}
-        rowClassName={() => 'cursor-pointer'}
+        rowClassName={() => 'row-clickable'}
         paginator
         rows={10}
         rowHover
+        stripedRows
       >
         <Column
           header="Data"

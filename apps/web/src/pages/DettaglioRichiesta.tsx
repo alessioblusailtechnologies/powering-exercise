@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -16,7 +16,6 @@ import { api } from '../lib/api';
 
 export function DettaglioRichiesta() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
 
@@ -81,18 +80,20 @@ export function DettaglioRichiesta() {
     priorita !== data.priorita ||
     (riassunto || null) !== (data.riassunto ?? '');
 
+  const idShort = data.id.slice(0, 8);
+
   return (
-    <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 style={{ margin: 0 }}>Dettaglio richiesta</h2>
-        <Button
-          label="Indietro"
-          icon="pi pi-arrow-left"
-          severity="secondary"
-          outlined
-          onClick={() => navigate('/')}
-        />
-      </div>
+    <>
+      <nav className="breadcrumb" aria-label="breadcrumb">
+        <Link to="/">
+          <i className="pi pi-home" /> Lista richieste
+        </Link>
+        <i className="pi pi-angle-right breadcrumb-sep" />
+        <span className="breadcrumb-current">Richiesta #{idShort}</span>
+      </nav>
+
+      <div className="card">
+        <h2 style={{ marginTop: 0 }}>Dettaglio richiesta</h2>
 
       {(initialErrore || data.classificazione_errore) && (
         <div style={{ marginTop: 16 }}>
@@ -178,6 +179,7 @@ export function DettaglioRichiesta() {
           onClick={() => mutation.mutate()}
         />
       </div>
-    </div>
+      </div>
+    </>
   );
 }

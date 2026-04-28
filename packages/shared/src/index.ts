@@ -35,8 +35,16 @@ export const RichiestaSchema = z.object({
 });
 export type Richiesta = z.infer<typeof RichiestaSchema>;
 
+export const TESTO_MAX_LEN = 2000;
+
 export const CreaRichiestaSchema = z.object({
-  testo: z.string().min(1, 'Il testo non può essere vuoto').max(5000),
+  testo: z
+    .string()
+    .min(1, 'Il testo non può essere vuoto')
+    .max(
+      TESTO_MAX_LEN,
+      `Il testo non può superare ${TESTO_MAX_LEN} caratteri`,
+    ),
 });
 export type CreaRichiesta = z.infer<typeof CreaRichiestaSchema>;
 
