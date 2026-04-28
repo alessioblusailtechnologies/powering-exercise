@@ -36,7 +36,6 @@ services:
   - type: web
     name: powering-web
     runtime: static
-    plan: free
     rootDir: .
     buildCommand: |
       curl -fsSL https://bun.sh/install | bash
