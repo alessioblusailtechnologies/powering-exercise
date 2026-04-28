@@ -33,25 +33,17 @@ services:
         sync: false
 
   # ─── Frontend ─────────────────────────────────────────────────────────
+  # Docker (non Static Site) perché il monorepo usa workspace:* — il default
+  # static-site di Render fa `npm install` che non capisce quel protocollo.
+  # Lo stage builder usa Bun, lo stage runner serve con nginx + SPA fallback.
   - type: web
     name: powering-web
-    runtime: static
+    runtime: docker
+    plan: free
+    region: frankfurt
     rootDir: .
-    buildCommand: |
-      curl -fsSL https://bun.sh/install | bash
-      export PATH="$HOME/.bun/bin:$PATH"
-      bun install --frozen-lockfile
-      bun run --cwd apps/web build
-    staticPublishPath: ./apps/web/dist
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: .
     envVars:
       - key: VITE_API_URL
         value: https://powering-api.onrender.com
-    routes:
-      # SPA fallback: qualunque path non-asset → index.html (gestione lato React Router)
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    headers:
-      - path: /assets/*
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
