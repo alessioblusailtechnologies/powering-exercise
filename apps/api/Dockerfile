@@ -4,9 +4,12 @@
 
 FROM oven/bun:1.3-alpine AS deps
 WORKDIR /app
+# Copia TUTTI i package.json dei workspace per allineare il lockfile
+# anche se installiamo solo le deps di apps/api.
 COPY package.json bun.lock ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
 RUN bun install --frozen-lockfile
 
 FROM oven/bun:1.3-alpine AS runner
