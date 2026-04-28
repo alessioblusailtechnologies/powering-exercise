@@ -7,5 +7,3 @@ build
 *.log
 .DS_Store
 .vite
-bun.lock
-bun.lockb
