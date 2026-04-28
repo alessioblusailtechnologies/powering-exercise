@@ -1,18 +1,9 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import {
-  CLASSIFICAZIONE_FALLBACK,
-  ClassificazioneSchema,
-  type Classificazione,
-} from '@powering/shared';
-import { ClassifierTool } from './classifier-tool';
+import { CLASSIFICAZIONE_FALLBACK, ClassificazioneSchema } from '@powering/shared';
+import type { ClassifyResult } from '../../types';
+import { AnthropicTool } from './anthropic-tool';
 
-export type ClassifyResult =
-  | { ok: true; classificazione: Classificazione }
-  | {
-      ok: false;
-      error: string;
-      classificazione: typeof CLASSIFICAZIONE_FALLBACK;
-    };
+export type { ClassifyResult } from '../../types';
 
 /**
  * Estrae e valida la classificazione da un messaggio Anthropic.
@@ -23,7 +14,7 @@ export function parseClassificazioneFromMessage(
 ): ClassifyResult {
   const toolUseBlock = message.content.find(
     (block): block is Anthropic.ToolUseBlock =>
-      block.type === 'tool_use' && block.name === ClassifierTool.NAME,
+      block.type === 'tool_use' && block.name === AnthropicTool.NAME,
   );
 
   if (!toolUseBlock) {

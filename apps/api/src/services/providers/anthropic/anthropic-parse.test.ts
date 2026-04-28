@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import type Anthropic from '@anthropic-ai/sdk';
-import { parseClassificazioneFromMessage } from './classifier-parse';
+import { parseClassificazioneFromMessage } from './anthropic-parse';
 
 function fakeMessage(content: Anthropic.ContentBlock[]): Anthropic.Message {
   return {

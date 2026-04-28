@@ -5,11 +5,11 @@ import type Anthropic from '@anthropic-ai/sdk';
  * la classificazione strutturata. È il meccanismo "structured output" di Anthropic:
  * forziamo `tool_choice` su questo tool per ottenere JSON garantito.
  */
-export class ClassifierTool {
+export class AnthropicTool {
   static readonly NAME = 'salva_classificazione';
 
   static readonly DEFINITION: Anthropic.Tool = {
-    name: ClassifierTool.NAME,
+    name: AnthropicTool.NAME,
     description:
       'Salva la classificazione strutturata di una richiesta cliente. Va sempre chiamato.',
     input_schema: {

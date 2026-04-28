@@ -118,6 +118,34 @@ a {
   }
 }
 
+.topbar-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.topbar-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--pw-charcoal);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.topbar-nav-link:hover {
+  background: var(--pw-blue-soft);
+  color: var(--pw-blue);
+}
+
+.topbar-nav-link.active {
+  background: var(--pw-blue-soft);
+  color: var(--pw-blue);
+}
+
 /* App shell */
 .app-shell {
   max-width: 1200px;

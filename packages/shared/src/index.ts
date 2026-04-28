@@ -71,3 +71,52 @@ export const PRIORITA_OPZIONI: { label: string; value: Priorita }[] = [
   { label: 'Media', value: 'media' },
   { label: 'Alta', value: 'alta' },
 ];
+
+// ─── Configurazione modello AI ─────────────────────────────────────────────
+
+export const ProviderSchema = z.enum(['anthropic', 'openai']);
+export type Provider = z.infer<typeof ProviderSchema>;
+
+export const AiConfigSchema = z.object({
+  provider: ProviderSchema,
+  model: z.string().min(1),
+});
+export type AiConfig = z.infer<typeof AiConfigSchema>;
+
+export type ModelOption = { id: string; label: string };
+export type ProviderOption = {
+  id: Provider;
+  label: string;
+  models: ModelOption[];
+};
+
+export const AVAILABLE_AI_OPTIONS: ProviderOption[] = [
+  {
+    id: 'anthropic',
+    label: 'Anthropic',
+    models: [
+      { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5' },
+      { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
+    ],
+  },
+  {
+    id: 'openai',
+    label: 'OpenAI',
+    models: [
+      { id: 'gpt-4o-mini', label: 'GPT-4o mini' },
+      { id: 'gpt-4o', label: 'GPT-4o' },
+    ],
+  },
+];
+
+export const DEFAULT_AI_CONFIG: AiConfig = {
+  provider: 'anthropic',
+  model: 'claude-haiku-4-5',
+};
+
+/** Verifica che un model sia ammesso per il provider indicato. */
+export function isValidAiConfig(cfg: AiConfig): boolean {
+  const provider = AVAILABLE_AI_OPTIONS.find((p) => p.id === cfg.provider);
+  if (!provider) return false;
+  return provider.models.some((m) => m.id === cfg.model);
+}

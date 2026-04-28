@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { env } from './env';
+import { configRouter } from './routes/config';
 import { richiesteRouter } from './routes/richieste';
 
 const app = new Hono();
@@ -18,6 +19,7 @@ app.use(
 app.get('/health', (c) => c.json({ status: 'ok' }));
 
 app.route('/richieste', richiesteRouter);
+app.route('/config', configRouter);
 
 app.onError((err, c) => {
   console.error('[unhandled]', err);

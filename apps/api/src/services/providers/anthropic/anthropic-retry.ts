@@ -1,12 +1,12 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import { ClassifierTool } from './classifier-tool';
+import { AnthropicTool } from './anthropic-tool';
 
 /**
  * Costruisce il turno di feedback da accodare alla conversazione quando
- * l'output del modello non passa la validazione Zod. Permette al modello,
- * alla chiamata successiva, di vedere cosa ha sbagliato e correggere.
+ * l'output del modello non passa la validazione Zod, in modo che alla
+ * chiamata successiva il modello veda cosa ha sbagliato e corregga.
  */
-export class ClassifierRetry {
+export class AnthropicRetry {
   private static readonly SCHEMA_REMINDER =
     'categoria deve essere uno tra "tecnico", "amministrativo", "commerciale", "altro"; ' +
     'priorita uno tra "bassa", "media", "alta"; ' +
@@ -37,7 +37,7 @@ export class ClassifierRetry {
             type: 'tool_result',
             tool_use_id: toolUse.id,
             is_error: true,
-            content: `${error}. Riprova rispettando lo schema: ${ClassifierRetry.SCHEMA_REMINDER}`,
+            content: `${error}. Riprova rispettando lo schema: ${AnthropicRetry.SCHEMA_REMINDER}`,
           },
         ],
       };
@@ -45,7 +45,7 @@ export class ClassifierRetry {
 
     return {
       role: 'user',
-      content: `Errore: ${error}. Devi chiamare lo strumento "${ClassifierTool.NAME}" con i tre campi. Riprova.`,
+      content: `Errore: ${error}. Devi chiamare lo strumento "${AnthropicTool.NAME}" con i tre campi. Riprova.`,
     };
   }
 }

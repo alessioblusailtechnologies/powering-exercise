@@ -1,5 +1,7 @@
 import type {
   AggiornaRichiesta,
+  AiConfig,
+  ProviderOption,
   CreaRichiesta,
   Richiesta,
 } from '@powering/shared';
@@ -27,6 +29,11 @@ export type CreaRichiestaResponse = {
   classificazione_errore: string | null;
 };
 
+export type AiConfigResponse = {
+  current: AiConfig;
+  available: ProviderOption[];
+};
+
 export const api = {
   list: () => http<Richiesta[]>('/richieste'),
   get: (id: string) => http<Richiesta>(`/richieste/${id}`),
@@ -38,6 +45,13 @@ export const api = {
   update: (id: string, body: AggiornaRichiesta) =>
     http<Richiesta>(`/richieste/${id}`, {
       method: 'PATCH',
+      body: JSON.stringify(body),
+    }),
+
+  getAiConfig: () => http<AiConfigResponse>('/config/ai'),
+  setAiConfig: (body: AiConfig) =>
+    http<AiConfig>('/config/ai', {
+      method: 'PUT',
       body: JSON.stringify(body),
     }),
 };

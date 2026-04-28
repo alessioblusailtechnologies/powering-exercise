@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export function TopBar() {
   return (
@@ -11,6 +11,13 @@ export function TopBar() {
             <span className="bottom">Gestione richieste</span>
           </div>
         </Link>
+
+        <nav className="topbar-nav">
+          <NavLink to="/configurazione" className="topbar-nav-link">
+            <i className="pi pi-cog" />
+            <span>Configurazione</span>
+          </NavLink>
+        </nav>
       </div>
     </div>
   );
